@@ -11,6 +11,7 @@ import { CommitService } from './commits/services/commit.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommitsContainer } from './commits/container/commits.container';
 import { CommitListComponent } from './commits/components/commitList.component';
+import { CommitActions } from './commits/domain/commit.actions';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CommitListComponent } from './commits/components/commitList.component';
     CommitListComponent
   ],
   providers: [
-    CommitService
+    CommitService,
+    CommitActions
   ],
   bootstrap: [AppComponent]
 })

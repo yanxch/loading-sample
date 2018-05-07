@@ -41,7 +41,7 @@ bindAction<T>(type: string): BoundedAction<T> {
 }
 
 /*function action<T>(type: string): ActionCreator<T> {
-    return (payload: T) => ({type, payload});
+    return (payload: T) => ({ type, payload });
 }*/
 
 // type BoundAction<T> = (payload?: T) => void;
