@@ -12,7 +12,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommitsContainer } from './commits/container/commits.container';
 import { CommitListComponent } from './commits/components/commitList.component';
 import { CommitActions } from './commits/domain/commit.actions';
+import { StoreModule, ActionReducerMap } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { CommitState, reducer as commitReducer } from './commits/domain/commit.reducer';
+import { CommitEffects } from './commits/domain/commit.effects';
+import { CommitSelectors } from './commits/domain/commit.selectors';
 
+// TODO(christian): move in own state file
+export interface AppState {
+  commits: CommitState;
+}
+
+export const reducers: ActionReducerMap<AppState> = {
+  commits: commitReducer
+};
+
+export const effects: any[] = [CommitEffects];
 
 @NgModule({
   imports: [
@@ -21,7 +36,9 @@ import { CommitActions } from './commits/domain/commit.actions';
     HttpClientModule,
     MatButtonModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
   ],
   declarations: [
     AppComponent,
@@ -31,7 +48,8 @@ import { CommitActions } from './commits/domain/commit.actions';
   ],
   providers: [
     CommitService,
-    CommitActions
+    CommitActions,
+    CommitSelectors
   ],
   bootstrap: [AppComponent]
 })

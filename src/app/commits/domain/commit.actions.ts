@@ -26,7 +26,7 @@ export class CommitActions {
     //
     // Bound Actions
     //
-    loadCommits = bindAction(CommitActions.loadCommits, this.store.dispatch);
+    loadCommits = bindAction(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
 }
 
 /*@Injectable()
@@ -60,7 +60,10 @@ function action<T>(action: TypedAction<T>): ActionCreator<T> {
 }
 
 function bindAction<T>(action: ActionCreator<T>, dispatchFn): BoundedAction<T> {
-    return (payload: T) => dispatchFn(action(payload));
+    return (payload: T) => {
+        const a = action(payload);
+        dispatchFn(a);
+    };
 }
 
 function event<T>(type: string): EventCreator<T> {

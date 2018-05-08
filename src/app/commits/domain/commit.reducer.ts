@@ -17,5 +17,23 @@ export function reducer(state = initialState, action: PayloadAction<any>) {
         return state;
     }
 
+    if (isType(action, CommitActions.LOAD_COMMITS_SUCCESS)) {
+        console.log('Commits loading success');
+        const commits = [...action.payload];
+        return {
+            ...state,
+            commits
+        };
+    }
+
+    if (isType(action, CommitActions.LOAD_COMMITS_FAILED)) {
+        console.log('Commits loading failed');
+        const commits = [];
+        return {
+            ...state,
+            commits
+        };
+    }
+
     return state;
 }

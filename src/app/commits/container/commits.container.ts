@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Commit } from '../domain/commit';
 import { CommitService } from '../services/commit.service';
 import { Observable } from 'rxjs/Observable';
+import { CommitActions } from '../domain/commit.actions';
+import { CommitSelectors } from '../domain/commit.selectors';
 
 @Component({
     selector: 'commits-container',
@@ -11,10 +13,13 @@ import { Observable } from 'rxjs/Observable';
 export class CommitsContainer implements OnInit {
     commits: Observable<Commit[]>;
 
-    constructor(private commitService: CommitService) {}
+    constructor(private commitActions: CommitActions,
+                private commitSelectors: CommitSelectors) {
+        this.commitActions.loadCommits({username: 'mmalerba'});
+    }
 
     ngOnInit() {
-        this.commits = this.commitService.readCommitsByUsername('mmalerba'); 
+        this.commits = this.commitSelectors.loadCommits();
     }
 }
   

@@ -7,7 +7,6 @@ import { map, switchMap, catchError } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
 
-
 @Injectable()
 export class CommitEffects {
 
@@ -15,7 +14,7 @@ export class CommitEffects {
                 private commitService: CommitService) {}
 
     @Effect()
-    loadCommits$ = this.actions$.ofType(LOAD_COMMITS)
+    loadCommits$ = this.actions$.ofType(LOAD_COMMITS)   // write own operator that returns correct type
         .pipe(
             map((action: any) => action.payload.username),
             switchMap(username => {
