@@ -1,11 +1,18 @@
 import { Injectable } from "@angular/core";
 import { CommitService } from "../services/commit.service";
-import { Effect, Actions } from '@ngrx/effects';
-import { LOAD_COMMITS, CommitActions } from "./commit.actions";
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { LOAD_COMMITS, CommitActions, PayloadAction, TypedAction } from "./commit.actions";
 
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
+import { OperatorFunction } from "rxjs/interfaces";
+
+function isType<T extends TypedAction<any>>(
+    actionType: T
+): OperatorFunction<PayloadAction<T>, T> {
+    return filter((action: PayloadAction<T>): action is T => actionType.type === action.type);
+}
 
 @Injectable()
 export class CommitEffects {
@@ -14,9 +21,10 @@ export class CommitEffects {
                 private commitService: CommitService) {}
 
     @Effect()
-    loadCommits$ = this.actions$.ofType(LOAD_COMMITS)   // write own operator that returns correct type
+    loadCommits$ = this.actions$   
         .pipe(
-            map((action: any) => action.payload.username),
+            isType(CommitActions.LOAD_COMMITS),
+            map((action) => action.payload.username),
             switchMap(username => {
                 return this.commitService.readCommitsByUsername(username)
                     .pipe(

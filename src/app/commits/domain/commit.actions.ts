@@ -82,7 +82,7 @@ interface EventCreator<T> {
     (payload: T): Event<T>;
 }
 
-interface TypedAction<T> extends Action {
+export interface TypedAction<T> extends Action {
     readonly type: string;
     readonly payload?: T;
 }
