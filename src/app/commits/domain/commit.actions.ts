@@ -2,6 +2,7 @@ import { Action, Store } from '@ngrx/store';
 import { User } from './user';
 import { Commit } from './commit';
 import { Injectable } from '@angular/core';
+import { bindAction, action, type } from '../../state/actions';
 
 export const LOAD_COMMITS =             '[Commits] Load Commits';
 export const LOAD_COMMITS_SUCCESS =     '[Commits] Load Commits Success';
@@ -47,52 +48,3 @@ bindAction<T>(type: string): BoundedAction<T> {
 // type BoundAction<T> = (payload?: T) => void;
 // todo(christian): interface vs type ? 
 
-export function isType<T>(action: PayloadAction<any>, typedAction: TypedAction<T>): action is PayloadAction<T> {
-    return action.type === typedAction.type;
-}
-
-function type<T>(type: string): TypedAction<T> {
-    return { type };
-}
-
-function action<T>(action: TypedAction<T>): ActionCreator<T> {
-    return (payload: T) => ({ type: action.type, payload});
-}
-
-function bindAction<T>(action: ActionCreator<T>, dispatchFn): BoundedAction<T> {
-    return (payload: T) => {
-        const a = action(payload);
-        dispatchFn(a);
-    };
-}
-
-function event<T>(type: string): EventCreator<T> {
-    return (payload: T) => ({type, payload});
-}
-
-interface BoundedAction<T> {
-    (payload: T): void; // void == side effect
-}
-
-interface ActionCreator<T> {
-    (payload: T): PayloadAction<T>;
-}
-
-interface EventCreator<T> {
-    (payload: T): Event<T>;
-}
-
-export interface TypedAction<T> extends Action {
-    readonly type: string;
-    readonly payload?: T;
-}
-
-export interface PayloadAction<T> extends Action {
-    readonly type: string;
-    readonly payload?: T;
-}
-
-interface Event<T> extends Action {
-    readonly type: string;
-    readonly payload?: T;
-}
