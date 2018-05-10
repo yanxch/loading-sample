@@ -7,9 +7,9 @@ import { map, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
 import { OperatorFunction } from "rxjs/interfaces";
-import { TypedAction, PayloadAction } from "../../state/actions";
+import { PayloadAction } from "../../state/actions";
 
-function isType<T extends TypedAction<any>>(
+function isType<T extends PayloadAction<any>>(
     actionType: T
 ): OperatorFunction<PayloadAction<T>, T> {
     return filter((action: PayloadAction<T>): action is T => actionType.type === action.type);
