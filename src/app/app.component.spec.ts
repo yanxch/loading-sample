@@ -1,11 +1,27 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { CommitsContainer } from './commits/container/commits.container';
+import { CenteredComponent } from './layout/centered/centered.component';
+import { CommitListComponent } from './commits/components/commitList.component';
+import { MatButtonModule, MatListModule, MatIconModule } from '@angular/material';
+import { CommitActions } from './commits/domain/commit.actions';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
+      imports: [
+        MatButtonModule,
+        MatListModule,
+        MatIconModule
       ],
+      declarations: [
+        AppComponent,
+        CommitsContainer,
+        CenteredComponent,
+        CommitListComponent
+      ],
+      providers: [
+        CommitActions
+      ]
     }).compileComponents();
   }));
   it('should create the app', async(() => {

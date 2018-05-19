@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Commit } from '../domain/commit';
 import { CommitService } from '../services/commit.service';
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +8,8 @@ import { CommitSelectors } from '../domain/commit.selectors';
 @Component({
     selector: 'commits-container',
     templateUrl: './commits.container.html',
-    styleUrls: ['./commits.container.scss']
+    styleUrls: ['./commits.container.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommitsContainer implements OnInit {
     commits: Observable<Commit[]>;
@@ -22,4 +23,3 @@ export class CommitsContainer implements OnInit {
         this.commits = this.commitSelectors.loadCommits();
     }
 }
-  

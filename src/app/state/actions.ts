@@ -4,30 +4,30 @@ export function isType<T>(action: PayloadAction<any>, expected: PayloadAction<T>
     return action.type === expected.type;
 }
 
-export function action<T>(type: string): PayloadAction<T> {
+export function createAction<T>(type: string): PayloadAction<T> {
     return { type };
 }
 
-export function actionFn<T>(action: PayloadAction<T>): ActionCreator<T> {
+export function createActionFunction<T>(action: PayloadAction<T>): ActionFunction<T> {
     return (payload: T) => ({ type: action.type, payload});
 }
 
-export function bindActionFn<T>(action: ActionCreator<T>, dispatchFn): BoundedAction<T> {
+export function bindActionFunction<T>(action: ActionFunction<T>, dispatchFn): BoundActionCreator<T> {
     return (payload: T) => {
         const a = action(payload);
         dispatchFn(a);
     };
 }
 
-export interface BoundedAction<T> {
-    (payload: T): void; // void == side effect
-}
-
-export interface ActionCreator<T> {
-    (payload: T): PayloadAction<T>;
-}
-
 export interface PayloadAction<T> extends Action {
     readonly type: string;
     readonly payload?: T;
+}
+
+export interface ActionFunction<T> {
+    (payload: T): PayloadAction<T>;
+}
+
+export interface BoundActionCreator<T> {
+    (payload: T): void; // void == side effect
 }

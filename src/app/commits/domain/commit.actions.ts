@@ -2,7 +2,7 @@ import { Action, Store } from '@ngrx/store';
 import { User } from './user';
 import { Commit } from './commit';
 import { Injectable } from '@angular/core';
-import { bindActionFn, action, actionFn } from '../../state/actions';
+import { bindActionFunction, createAction, createActionFunction } from '../../state/actions';
 
 export const LOAD_COMMITS =             '[Commits] Load Commits';
 export const LOAD_COMMITS_SUCCESS =     '[Commits] Load Commits Success';
@@ -11,21 +11,21 @@ export const LOAD_COMMITS_FAILED =      '[Commits] Load Commits Fail';
 @Injectable()
 export class CommitActions {
     //
-    // Action - action
+    // Action Definitions
     //
-    static readonly LOAD_COMMITS = action<Pick<User, 'username'>>(LOAD_COMMITS);
-    static readonly LOAD_COMMITS_SUCCESS = action<Commit[]>(LOAD_COMMITS_SUCCESS);
-    static readonly LOAD_COMMITS_FAILED = action(LOAD_COMMITS_FAILED);
+    static readonly LOAD_COMMITS = createAction<Pick<User, 'username'>>(LOAD_COMMITS);
+    static readonly LOAD_COMMITS_SUCCESS = createAction<Commit[]>(LOAD_COMMITS_SUCCESS);
+    static readonly LOAD_COMMITS_FAILED = createAction(LOAD_COMMITS_FAILED);
     //
-    // Command / Event
+    // Action Functions
     //
-    static readonly loadCommits = actionFn(CommitActions.LOAD_COMMITS);
-    static readonly loadCommitsSuccess = actionFn(CommitActions.LOAD_COMMITS_SUCCESS);
-    static readonly loadCommitsFailed = actionFn(CommitActions.LOAD_COMMITS_FAILED);
+    static readonly loadCommits = createActionFunction(CommitActions.LOAD_COMMITS);
+    static readonly loadCommitsSuccess = createActionFunction(CommitActions.LOAD_COMMITS_SUCCESS);
+    static readonly loadCommitsFailed = createActionFunction(CommitActions.LOAD_COMMITS_FAILED);
     //
     constructor(private store: Store<any>) {}
     //
-    // Bound Commond
+    // Action Bounded Functions
     //
-    loadCommits = bindActionFn(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
+    loadCommits = bindActionFunction(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
 }
