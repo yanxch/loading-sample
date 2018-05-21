@@ -4,6 +4,7 @@ import { CommitService } from '../services/commit.service';
 import { Observable } from 'rxjs/Observable';
 import { CommitActions } from '../domain/commit.actions';
 import { CommitSelectors } from '../domain/commit.selectors';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'commits-container',
@@ -12,14 +13,24 @@ import { CommitSelectors } from '../domain/commit.selectors';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommitsContainer implements OnInit {
-    commits: Observable<Commit[]>;
+    username$: Observable<string>;
+    commits$: Observable<Commit[]>;
 
-    constructor(private commitActions: CommitActions,
-                private commitSelectors: CommitSelectors) {
-        this.commitActions.loadCommits({username: 'mmalerba'});
+    username: string = 'yanxch';
+
+    constructor(private actions: CommitActions,
+                private selectors: CommitSelectors) {
+
+        this.commits$ = this.selectors.selectCommits();
+        this.username$ = this.selectors.selectUsername();
+            
+        this.username$
+            .pipe(take(1))
+            .subscribe(u => this.username = u);
+
+        this.actions.loadCommits({username: this.username});
     }
 
     ngOnInit() {
-        this.commits = this.commitSelectors.loadCommits();
     }
 }

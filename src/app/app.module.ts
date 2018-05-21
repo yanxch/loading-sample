@@ -17,13 +17,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { CommitState, reducer as commitReducer } from './commits/domain/commit.reducer';
 import { CommitEffects } from './commits/domain/commit.effects';
 import { CommitSelectors } from './commits/domain/commit.selectors';
+import { StoreRouterConnectingModule, routerReducer, RouterReducerState } from '@ngrx/router-store';
+import { RouterModule } from '@angular/router';
+import { routes } from './routes';
+
 
 // TODO(christian): move in own state file
 export interface AppState {
+  router: RouterReducerState;
   commits: CommitState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
+  router: routerReducer,
   commits: commitReducer
 };
 
@@ -37,8 +43,12 @@ export const effects: any[] = [CommitEffects];
     MatButtonModule,
     MatListModule,
     MatIconModule,
+    RouterModule.forRoot(routes, { useHash: true }),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router'
+    })
   ],
   declarations: [
     AppComponent,
