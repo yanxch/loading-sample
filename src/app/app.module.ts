@@ -17,9 +17,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { CommitState, reducer as commitReducer } from './commits/domain/commit.reducer';
 import { CommitEffects } from './commits/domain/commit.effects';
 import { CommitSelectors } from './commits/domain/commit.selectors';
-import { StoreRouterConnectingModule, routerReducer, RouterReducerState } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, routerReducer, RouterReducerState, RouterStateSerializer } from '@ngrx/router-store';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes';
+import { CustomRouterStateSerializer } from './state/router';
 
 
 // TODO(christian): move in own state file
@@ -59,7 +60,8 @@ export const effects: any[] = [CommitEffects];
   providers: [
     CommitService,
     CommitActions,
-    CommitSelectors
+    CommitSelectors,
+    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer }
   ],
   bootstrap: [AppComponent]
 })

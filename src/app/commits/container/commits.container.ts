@@ -16,21 +16,19 @@ export class CommitsContainer implements OnInit {
     username$: Observable<string>;
     commits$: Observable<Commit[]>;
 
-    username: string = 'yanxch';
-
     constructor(private actions: CommitActions,
                 private selectors: CommitSelectors) {
 
         this.commits$ = this.selectors.selectCommits();
-        this.username$ = this.selectors.selectUsername();
-            
-        this.username$
-            .pipe(take(1))
-            .subscribe(u => this.username = u);
-
-        this.actions.loadCommits({username: this.username});
     }
 
     ngOnInit() {
+        this.username$ = this.selectors.selectUsername();
+            
+        this.username$
+            .subscribe(username => {
+                this.actions.loadCommits({ username });
+            });
+
     }
 }
