@@ -27,7 +27,6 @@ export class CommitSelectors {
     selectUsername(): Observable<string> {
         return this.store.pipe(
             select(getUsernameRouterParam),
-            take(1)
         );
     }
 

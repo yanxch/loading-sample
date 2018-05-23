@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Commit } from '../domain/commit';
 import { CommitService } from '../services/commit.service';
 import { Observable } from 'rxjs/Observable';
 import { CommitActions } from '../domain/commit.actions';
 import { CommitSelectors } from '../domain/commit.selectors';
 import { take } from 'rxjs/operators';
+import { untilComponentDestroyed } from '../../utils/componetDestroyed';
 
 @Component({
     selector: 'commits-container',
@@ -12,7 +13,7 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./commits.container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommitsContainer implements OnInit {
+export class CommitsContainer implements OnInit, OnDestroy {
     username$: Observable<string>;
     commits$: Observable<Commit[]>;
 
@@ -20,15 +21,17 @@ export class CommitsContainer implements OnInit {
                 private selectors: CommitSelectors) {
 
         this.commits$ = this.selectors.selectCommits();
+        this.username$ = this.selectors.selectUsername();
+
     }
 
-    ngOnInit() {
-        this.username$ = this.selectors.selectUsername();
-            
+    ngOnInit() {            
         this.username$
+            .pipe(untilComponentDestroyed(this))
             .subscribe(username => {
                 this.actions.loadCommits({ username });
             });
-
     }
+
+    ngOnDestroy() {}
 }
