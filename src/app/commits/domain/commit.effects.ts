@@ -15,7 +15,7 @@ import { Action } from "rxjs/scheduler/Action";
     return filter((action: PayloadAction<T>): action is T => actionType.type === action.type);
 }*/
 
-function isType<T extends PayloadAction<F>, F>(actionFn: ActionFunction<F>): MonoTypeOperatorFunction<PayloadAction<F>> {
+function isAction<T extends PayloadAction<F>, F>(actionFn: ActionFunction<F>): MonoTypeOperatorFunction<PayloadAction<F>> {
     return filter((action: PayloadAction<F>): action is T => actionFn.type === action.type);
 }
 
@@ -28,7 +28,7 @@ export class CommitEffects {
     @Effect()
     loadCommits$ = this.actions$   
         .pipe(
-            isType(CommitActions.loadCommits),
+            isAction(CommitActions.loadCommits),
             map((action) => action.payload.username),
             switchMap(username => {
                 return this.commitService.readCommitsByUsername(username)
