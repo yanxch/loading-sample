@@ -6,12 +6,17 @@ import { CommitActions } from "./commit.actions";
 import { map, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
-import { OperatorFunction } from "rxjs/interfaces";
-import { PayloadAction } from "../../state/actions";
+import { OperatorFunction, MonoTypeOperatorFunction } from "rxjs/interfaces";
+import { PayloadAction, ActionFunction } from "../../state/actions";
+import { Action } from "rxjs/scheduler/Action";
 
 // Custom RXJS Operator
-function isType<T extends PayloadAction<any>>(actionType: T): OperatorFunction<PayloadAction<T>, T> {
+/*function isType<T extends PayloadAction<any>>(actionType: T): MonoTypeOperatorFunction<T> {
     return filter((action: PayloadAction<T>): action is T => actionType.type === action.type);
+}*/
+
+function isType<T extends PayloadAction<F>, F>(actionFn: ActionFunction<F>): MonoTypeOperatorFunction<PayloadAction<F>> {
+    return filter((action: PayloadAction<F>): action is T => actionFn.type === action.type);
 }
 
 @Injectable()
@@ -23,7 +28,7 @@ export class CommitEffects {
     @Effect()
     loadCommits$ = this.actions$   
         .pipe(
-            isType(CommitActions.LOAD_COMMITS),
+            isType(CommitActions.loadCommits),
             map((action) => action.payload.username),
             switchMap(username => {
                 return this.commitService.readCommitsByUsername(username)

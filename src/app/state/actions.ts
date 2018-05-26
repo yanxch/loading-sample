@@ -4,12 +4,18 @@ export function isType<T>(action: PayloadAction<any>, expected: PayloadAction<T>
     return action.type === expected.type;
 }
 
+export function isAction<T>(action: PayloadAction<any>, expectedFn: ActionFunction<T>): action is PayloadAction<T> {
+    return action.type === expectedFn.type;
+}
+
 export function createAction<T>(type: string): PayloadAction<T> {
     return { type };
 }
 
 export function createActionFunction<T>(action: PayloadAction<T>): ActionFunction<T> {
-    return (payload: T) => ({ type: action.type, payload});
+    const fn: any =  (payload: T) => ({ type: action.type, payload});
+    fn.type = action.type;
+    return fn as ActionFunction<T>;
 }
 
 export function bindActionFunction<T>(action: ActionFunction<T>, dispatchFn): BoundActionCreator<T> {
@@ -26,6 +32,7 @@ export interface PayloadAction<T> extends Action {
 
 export interface ActionFunction<T> {
     (payload: T): PayloadAction<T>;
+    type: string;
 }
 
 export interface BoundActionCreator<T> {
