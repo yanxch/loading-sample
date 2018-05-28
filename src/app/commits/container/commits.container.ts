@@ -6,6 +6,7 @@ import { CommitActions } from '../domain/commit.actions';
 import { CommitSelectors } from '../domain/commit.selectors';
 import { take } from 'rxjs/operators';
 import { untilComponentDestroyed } from '../../utils/componetDestroyed';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'commits-container',
@@ -27,7 +28,10 @@ export class CommitsContainer implements OnInit, OnDestroy {
 
     ngOnInit() {            
         this.username$
-            .pipe(untilComponentDestroyed(this))
+            .pipe(
+                distinctUntilChanged(),
+                untilComponentDestroyed(this)
+            )
             .subscribe(username => {
                 this.actions.loadCommits({ username });
             });

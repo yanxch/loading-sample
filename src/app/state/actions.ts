@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
 
-export function isType<T>(action: PayloadAction<any>, expected: PayloadAction<T>): action is PayloadAction<T> {
-    return action.type === expected.type;
+export function isType<T>(action: PayloadAction<any>, ...expected: PayloadAction<T>[]): action is PayloadAction<T> {
+    return expected.some(e => e.type === action.type)
 }
 
-export function isAction<T>(action: PayloadAction<any>, expectedFn: ActionFunction<T>): action is PayloadAction<T> {
-    return action.type === expectedFn.type;
+export function isAction<T>(action: PayloadAction<any>, ...expectedFn: ActionFunction<T>[]): action is PayloadAction<T> {
+    return expectedFn.some(e => e.type === action.type);
 }
 
 export function createAction<T>(type: string): PayloadAction<T> {

@@ -1,7 +1,7 @@
 import { Commit } from './commit';
 import { Action } from '@ngrx/store';
 import { CommitActions } from './commit.actions';
-import { PayloadAction, isType, isAction } from '../../state/actions';
+import { PayloadAction, isAction } from '../../state/actions';
 
 export interface CommitState {
     commits: Commit[];

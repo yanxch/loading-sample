@@ -6,18 +6,16 @@ import { AppState } from "../../app.module";
 import { RouterStateUrl } from "../../state/router";
 import { take } from "rxjs/operators";
 
+
+// Selectors - Pure Functions
 export const commitsSelector = (state: AppState) => state.commits.commits;
-export const usernameParamSelector = (state: AppState) => {
-    return state.router.state.root.paramMap.get('username');
-};
 
-const getRouterState = createFeatureSelector('router');
+export const routeSelector = createFeatureSelector('router');
+export const routeParamSelector = (paramName: string) => (router: any) => router.state && router.state.params[paramName];
 
-const getUsernameRouterParam = createSelector(
-    getRouterState,
-    (router: any) => {
-        return router.state && router.state.params && router.state.params.username;
-    }
+export const usernameSelector = createSelector(
+    routeSelector,
+    routeParamSelector('username')
 );
 
 @Injectable()
@@ -25,9 +23,7 @@ export class CommitSelectors {
     constructor(private store: Store<any>) {}
 
     selectUsername(): Observable<string> {
-        return this.store.pipe(
-            select(getUsernameRouterParam),
-        );
+        return this.store.select(usernameSelector);
     }
 
     selectCommits(): Observable<Commit[]> {
