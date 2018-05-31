@@ -7,7 +7,7 @@ import { map, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
 import { OperatorFunction, MonoTypeOperatorFunction } from "rxjs/interfaces";
-import { PayloadAction, ActionFunction } from "../../state/actions";
+import { PayloadAction, ActionCreator } from "../../state/actions";
 import { Action } from "rxjs/scheduler/Action";
 
 /*function isType<T extends PayloadAction<any>>(actionType: T): MonoTypeOperatorFunction<T> {
@@ -15,8 +15,8 @@ import { Action } from "rxjs/scheduler/Action";
 }*/
 
 // Custom RXJS Operator
-function isAction<T extends PayloadAction<F>, F>(...actionFn: ActionFunction<F>[]): MonoTypeOperatorFunction<PayloadAction<F>> {
-    return filter((action: PayloadAction<F>): action is T => actionFn.some(fn => fn.type === action.type));
+function isAction<T extends PayloadAction<F>, F>(...actionCreators: ActionCreator<F>[]): MonoTypeOperatorFunction<PayloadAction<F>> {
+    return filter((action: PayloadAction<F>): action is T => actionCreators.some(fn => fn.type === action.type));
 }
 
 @Injectable()

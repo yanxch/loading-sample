@@ -1,26 +1,26 @@
 import { Action } from '@ngrx/store';
 
-export function isType<T>(action: PayloadAction<any>, ...expected: PayloadAction<T>[]): action is PayloadAction<T> {
-    return expected.some(e => e.type === action.type)
+export function isType<T>(action: PayloadAction<any>, ...expectedAction: PayloadAction<T>[]): action is PayloadAction<T> {
+    return expectedAction.some(e => e.type === action.type)
 }
 
-export function isAction<T>(action: PayloadAction<any>, ...expectedFn: ActionFunction<T>[]): action is PayloadAction<T> {
-    return expectedFn.some(e => e.type === action.type);
+export function isAction<T>(action: PayloadAction<any>, ...expectedActionCreator: ActionCreator<T>[]): action is PayloadAction<T> {
+    return expectedActionCreator.some(e => e.type === action.type);
 }
 
 export function createAction<T>(type: string): PayloadAction<T> {
     return { type };
 }
 
-export function createActionFunction<T>(action: PayloadAction<T>): ActionFunction<T> {
+export function createActionCreator<T>(action: PayloadAction<T>): ActionCreator<T> {
     const fn: any =  (payload: T) => ({ type: action.type, payload});
     fn.type = action.type;
-    return fn as ActionFunction<T>;
+    return fn as ActionCreator<T>;
 }
 
-export function bindActionFunction<T>(action: ActionFunction<T>, dispatchFn): BoundActionCreator<T> {
+export function bindActionCreator<T>(actionCreator: ActionCreator<T>, dispatchFn): BoundActionCreator<T> {
     return (payload: T) => {
-        const a = action(payload);
+        const a = actionCreator(payload);
         dispatchFn(a);
     };
 }
@@ -30,7 +30,7 @@ export interface PayloadAction<T> extends Action {
     readonly payload?: T;
 }
 
-export interface ActionFunction<T> {
+export interface ActionCreator<T> {
     (payload: T): PayloadAction<T>;
     type: string;
 }

@@ -2,7 +2,7 @@ import { Action, Store } from '@ngrx/store';
 import { User } from './user';
 import { Commit } from './commit';
 import { Injectable } from '@angular/core';
-import { bindActionFunction, createAction, createActionFunction } from '../../state/actions';
+import { bindActionCreator, createAction, createActionCreator } from '../../state/actions';
 
 export const LOAD_COMMITS =             '[Commits] Load Commits';
 export const LOAD_COMMITS_SUCCESS =     '[Commits] Load Commits Success';
@@ -19,13 +19,13 @@ export class CommitActions {
     //
     // Action Functions
     //
-    static readonly loadCommits = createActionFunction(CommitActions.LOAD_COMMITS);
-    static readonly loadCommitsSuccess = createActionFunction(CommitActions.LOAD_COMMITS_SUCCESS);
-    static readonly loadCommitsFailed = createActionFunction(CommitActions.LOAD_COMMITS_FAILED);
+    static readonly loadCommits = createActionCreator(CommitActions.LOAD_COMMITS);
+    static readonly loadCommitsSuccess = createActionCreator(CommitActions.LOAD_COMMITS_SUCCESS);
+    static readonly loadCommitsFailed = createActionCreator(CommitActions.LOAD_COMMITS_FAILED);
     //
     constructor(private store: Store<any>) {}
     //
     // Action Bounded Functions
     //
-    loadCommits = bindActionFunction(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
+    loadCommits = bindActionCreator(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
 }
