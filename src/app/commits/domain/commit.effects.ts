@@ -7,16 +7,14 @@ import { map, switchMap, catchError, filter } from 'rxjs/operators';
 import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
 import { OperatorFunction, MonoTypeOperatorFunction } from "rxjs/interfaces";
-import { PayloadAction, ActionCreator } from "../../state/actions";
-import { Action } from "rxjs/scheduler/Action";
+import { Action, TypedActionCreator } from "../../state";
 
-/*function isType<T extends PayloadAction<any>>(actionType: T): MonoTypeOperatorFunction<T> {
-    return filter((action: PayloadAction<T>): action is T => actionType.type === action.type);
-}*/
 
 // Custom RXJS Operator
-function isAction<T extends PayloadAction<F>, F>(...actionCreators: ActionCreator<F>[]): MonoTypeOperatorFunction<PayloadAction<F>> {
-    return filter((action: PayloadAction<F>): action is T => actionCreators.some(fn => fn.type === action.type));
+function isAction<T extends Action<F>, F>(...actionCreators: TypedActionCreator<F>[]): MonoTypeOperatorFunction<Action<F>> {
+    return filter((action: Action<F>): action is T => {
+        return actionCreators.some(fn => fn.type === action.type);
+    });
 }
 
 @Injectable()
@@ -34,7 +32,7 @@ export class CommitEffects {
                 return this.commitService.readCommitsByUsername(username)
                     .pipe(
                         map(commits => CommitActions.loadCommitsSuccess(commits)),
-                        catchError(error => of(CommitActions.loadCommitsFailed(error)))
+                        catchError(error => of(CommitActions.loadCommitsFailure(error)))
                     )
                 })
         );

@@ -1,4 +1,4 @@
-import { Action } from '@ngrx/store';
+/*import { Action } from '@ngrx/store';
 
 export function isType<T>(action: PayloadAction<any>, ...expectedAction: PayloadAction<T>[]): action is PayloadAction<T> {
     return expectedAction.some(e => e.type === action.type)
@@ -45,4 +45,4 @@ export interface ActionCreator<T> {
 
 export interface BoundActionCreator<T> {
     (payload: T): void; // void == side effect
-}
+}*/

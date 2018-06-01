@@ -1,7 +1,6 @@
 import { Commit } from './commit';
-import { Action } from '@ngrx/store';
 import { CommitActions } from './commit.actions';
-import { PayloadAction, isAction } from '../../state/actions';
+import { Action, isAction } from '../../state';
 
 export interface CommitState {
     commits: Commit[];
@@ -11,7 +10,7 @@ export const initialState: CommitState = {
     commits: []
 };
 
-export function reducer(state = initialState, action: PayloadAction<any>) {
+export function reducer(state = initialState, action: Action<any>) {
 
     if (isAction(action, CommitActions.loadCommits)) {
         return state;
@@ -25,7 +24,7 @@ export function reducer(state = initialState, action: PayloadAction<any>) {
         };
     }
 
-    if (isAction(action, CommitActions.loadCommitsFailed)) {
+    if (isAction(action, CommitActions.loadCommitsFailure)) {
         const commits = [];
         return {
             ...state,
