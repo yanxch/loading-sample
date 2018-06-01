@@ -24,9 +24,6 @@ export class CommitsContainer implements OnInit, OnDestroy {
         this.commits$ = this.selectors.selectCommits();
         this.username$ = this.selectors.selectUsername();
 
-    }
-
-    ngOnInit() {            
         this.username$
             .pipe(
                 distinctUntilChanged(),
@@ -36,6 +33,8 @@ export class CommitsContainer implements OnInit, OnDestroy {
                 this.actions.loadCommits({ username });
             });
     }
+
+    ngOnInit() {}
 
     ngOnDestroy() {}
 }
