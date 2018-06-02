@@ -12,11 +12,11 @@ export const initialState: CommitState = {
 
 export function reducer(state = initialState, action: Action<any>) {
 
-    if (isAction(action, CommitActions.loadCommits)) {
+    if (isAction(action, CommitActions.LoadCommits)) {
         return state;
     }
 
-    if (isAction(action, CommitActions.loadCommitsSuccess)) {
+    if (isAction(action, CommitActions.LoadCommitsSuccess)) {
         const commits = [...action.payload];
         return {
             ...state,
@@ -24,7 +24,7 @@ export function reducer(state = initialState, action: Action<any>) {
         };
     }
 
-    if (isAction(action, CommitActions.loadCommitsFailure)) {
+    if (isAction(action, CommitActions.LoadCommitsFailure)) {
         const commits = [];
         return {
             ...state,

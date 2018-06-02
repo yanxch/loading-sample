@@ -17,14 +17,14 @@ export class CommitActions {
     /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     /*              ACTION CREATORS                 */
     /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-   static loadCommits = createActionCreator<Pick<User, 'username'>>(CommitActions.LOAD_COMMITS);
-   static loadCommitsSuccess = createActionCreator<Commit[]>(CommitActions.LOAD_COMMITS_SUCCESS);
-   static loadCommitsFailure = createActionCreator<{}>(CommitActions.LOAD_COMMITS_FAILURE);
+   static LoadCommits = createActionCreator<Pick<User, 'username'>>(CommitActions.LOAD_COMMITS);
+   static LoadCommitsSuccess = createActionCreator<Commit[]>(CommitActions.LOAD_COMMITS_SUCCESS);
+   static LoadCommitsFailure = createActionCreator<{}>(CommitActions.LOAD_COMMITS_FAILURE);
 
    constructor(private store: Store<any>) {}
 
     /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     /*              BOUND ACTIONS                   */
     /*  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-   loadCommits = createBoundActionCreator(CommitActions.loadCommits, this.store.dispatch.bind(this.store));
+   loadCommits = createBoundActionCreator(CommitActions.LoadCommits, this.store.dispatch.bind(this.store));
 }

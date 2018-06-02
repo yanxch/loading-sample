@@ -26,13 +26,13 @@ export class CommitEffects {
     @Effect()
     loadCommits$ = this.actions$   
         .pipe(
-            isAction(CommitActions.loadCommits),
+            isAction(CommitActions.LoadCommits),
             map((action) => action.payload.username),
             switchMap(username => {
                 return this.commitService.readCommitsByUsername(username)
                     .pipe(
-                        map(commits => CommitActions.loadCommitsSuccess(commits)),
-                        catchError(error => of(CommitActions.loadCommitsFailure(error)))
+                        map(commits => CommitActions.LoadCommitsSuccess(commits)),
+                        catchError(error => of(CommitActions.LoadCommitsFailure(error)))
                     )
                 })
         );

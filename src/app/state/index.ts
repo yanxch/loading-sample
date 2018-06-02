@@ -48,7 +48,7 @@ function createActionCreator<T>(type: Type): TypedActionCreator<T> {
     return actionCreator as TypedActionCreator<T>;    
 }
 
-function createBoundActionCreator<T>(actionCreator: ActionCreator<T>, dispatchFn): BoundActionCreator<T> {
+function createBoundActionCreator<T>(actionCreator: ActionCreator<T>, dispatchFn: (action: Action<T>) => void): BoundActionCreator<T> {
     return (payload: T) => {
         const action = actionCreator(payload);
         dispatchFn(action);   
